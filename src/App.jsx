@@ -1,9 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Main from "./Components/Mainn/Main";
-import About from "./Components/About/About";
 import Courses from "./Components/Courses/Courses";
-import Contact from "./Components/Contact/Contact";
-import Help from "./Components/Help/Help";
 import Login from "./Components/LogIn/LogIn";
 import Header from "./Components/Header/Header";
 import HtmlCourse from "./Components/Courses/HTML/HtmlCourse";
@@ -13,17 +10,13 @@ import TailwindCourse from "./Components/Courses/Tailwind/TailwindCourse";
 import ReactCourse from "./Components/Courses/React/ReactCourse";
 import JsCourse from "./Components/Courses/JS/JsCourse";
 
-
 function App() {
   return (
-    <Router>
+    <Router basename="/outlaw-coding-course/">
       <Routes>
         <Route path="/" element={<Header />}>
           <Route index element={<Main />} />
-          {/* <Route path="about" element={<About />} /> */}
           <Route path="courses" element={<Courses />} />
-          {/* <Route path="contact" element={<Contact />} /> */}
-          {/* <Route path="help" element={<Help />} /> */}
           <Route path="login" element={<Login />} />
 
           <Route path="courses/html" element={<HtmlCourse />} />
