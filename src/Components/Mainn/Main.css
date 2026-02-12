@@ -1,0 +1,37 @@
+body {
+    overflow: hidden;
+    height: 100vh;
+}
+
+.code-bg {
+    position: absolute;
+    width: 40%;
+    overflow: hidden;
+    white-space: pre;
+    animation: typing 6s steps(80, end) infinite, blink 1s step-end infinite alternate;
+    mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+}
+
+@keyframes typing {
+    0% {
+        clip-path: inset(0 100% 0 0);
+    }
+
+    40% {
+        clip-path: inset(0 0 0 0);
+    }
+
+    60% {
+        clip-path: inset(0 0 0 0);
+    }
+
+    100% {
+        clip-path: inset(0 100% 0 0);
+    }
+}
+
+@keyframes blink {
+    50% {
+        opacity: 0.4;
+    }
+}
