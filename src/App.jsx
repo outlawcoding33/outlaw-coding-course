@@ -9,6 +9,7 @@ import GitHubCourse from "./Components/Courses/GitHub/GitHubCourse";
 import TailwindCourse from "./Components/Courses/Tailwind/TailwindCourse";
 import ReactCourse from "./Components/Courses/React/ReactCourse";
 import JsCourse from "./Components/Courses/JS/JsCourse";
+import "./index.css";
 
 
 function App() {

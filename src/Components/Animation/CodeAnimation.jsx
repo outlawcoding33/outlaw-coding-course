@@ -46,14 +46,13 @@ export default function CodeAnimation() {
     useEffect(() => {
         if (prefersReducedMotion) return;
 
-        const intervalMs = isMobile ? 1200 : 800; // mobile-ում դանդաղ
-        const maxLines = isMobile ? 8 : 15;       // mobile-ում քիչ տող
+        const intervalMs = isMobile ? 1200 : 800;
+        const maxLines = isMobile ? 8 : 15;
 
         const interval = setInterval(() => {
             const randomCode = longList[Math.floor(Math.random() * longList.length)];
             const id = Date.now() + Math.random();
 
-            // mobile-ում left-ը մի քիչ սահմանափակում ենք որ դուրս չգա
             const leftMax = isMobile ? 60 : 80;
             const topMax = isMobile ? 92 : 90;
 
@@ -72,15 +71,13 @@ export default function CodeAnimation() {
         return () => clearInterval(interval);
     }, [isMobile, longList, prefersReducedMotion]);
 
-    // Header-ի բարձրությունը տարբեր սարքերի համար
     const headerH = isMobile ? 64 : 72;
 
-    // Եթե user-ը reduced motion ունի՝ ընդհանրապես չցուցադրենք
     if (prefersReducedMotion) return null;
 
     return (
         <div
-            className="fixed left-0 w-full opacity-60 font-mono text-green-400/80 pointer-events-none z-0"
+            className="fixed left-0 right-0 opacity-60 font-mono text-green-400/80 pointer-events-none z-0 overflow-hidden"
             style={{
                 top: `${headerH}px`,
                 height: `calc(100dvh - ${headerH}px)`,
@@ -120,14 +117,16 @@ function TypingLine({ text, top, left, duration, rotate, isMobile }) {
 
     return (
         <motion.pre
-            className={`absolute whitespace-pre select-none ${isMobile ? "text-xs leading-4" : "text-2xl leading-5"
+            className={`absolute whitespace-pre select-none overflow-hidden ${isMobile ? "text-xs leading-4" : "text-2xl leading-5"
                 }`}
-            style={{ top, left, transform: `rotate(${rotate}deg)` }}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{
-                opacity: [0.25, 1, 0.25],
-                y: [10, -10],
+            style={{
+                top,
+                left,
+                transform: `rotate(${rotate}deg)`,
+                maxWidth: "90vw", // ՍԱ ա scroll-ը փակող հիմնականը
             }}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: [0.25, 1, 0.25], y: [10, -10] }}
             transition={{ duration: duration * 2, repeat: Infinity, ease: "easeInOut" }}
         >
             {displayed}

@@ -86,7 +86,9 @@ export default function Header() {
     };
 
     return (
-        <div className="relative min-h-screen bg-black/90 text-yellow-400 font-sans overflow-hidden">
+        <div className="relative min-h-screen bg-black/90 text-yellow-400 font-sans overflow-x-hidden">
+
+
             {/* HEADER */}
             <header className="fixed top-0 left-0 w-full z-50 bg-gradient-to-r from-black via-zinc-900 to-black shadow-xl">
                 <div className="flex justify-between items-center px-4 sm:px-6 lg:px-10 py-4">
@@ -157,7 +159,9 @@ export default function Header() {
             </header>
 
             {/* MAIN */}
-            <main className="pt-20 sm:pt-24 min-h-screen overflow-y-auto relative bg-transparent">
+            <main className="pt-20 sm:pt-24 overflow-x-hidden relative bg-transparent">
+
+
                 <Outlet />
             </main>
 
