@@ -1,15 +1,32 @@
+/* ՀԱՅՏՆԻ ՍԽԱԼԸ՝ սա global մի պահի՛
 body {
-    overflow: hidden;
-    height: 100vh;
+  overflow: hidden;
+  height: 100vh;
 }
+*/
 
+/* Code animation layer */
 .code-bg {
     position: absolute;
     width: 40%;
     overflow: hidden;
     white-space: pre;
     animation: typing 6s steps(80, end) infinite, blink 1s step-end infinite alternate;
-    mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+    mask-image: linear-gradient(to bottom,
+            transparent 0%,
+            black 15%,
+            black 85%,
+            transparent 100%);
+}
+
+/* Mobile fix */
+@media (max-width: 768px) {
+    .code-bg {
+        width: 100%;
+        font-size: 12px;
+        opacity: 0.35;
+        /* որ տեքստը չկռվի վերնագրի հետ */
+    }
 }
 
 @keyframes typing {

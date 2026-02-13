@@ -1,13 +1,15 @@
 import { Link, Outlet } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import { Eye, EyeOff, X } from "lucide-react";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Eye, EyeOff, X, Menu } from "lucide-react";
 import CodeAnimation from "../Animation/CodeAnimation";
 
 export default function Header() {
     const [showModal, setShowModal] = useState(false);
     const [isLogin, setIsLogin] = useState(true);
     const [showPassword, setShowPassword] = useState(false);
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
     const [formData, setFormData] = useState({
         username: "",
         email: "",
@@ -23,8 +25,18 @@ export default function Header() {
 
     const usernameRegex = /^[a-zA-Z0-9_]{3,16}$/;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const passwordRegex =
-        /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+    const resetForm = () => {
+        setFormData({
+            username: "",
+            email: "",
+            password: "",
+            confirm: "",
+            agree: false,
+        });
+        setShowPassword(false);
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -33,24 +45,18 @@ export default function Header() {
             alert("Խնդրում ենք հաստատել համաձայնությունը ✅");
             return;
         }
-
         if (!usernameRegex.test(formData.username)) {
             alert("Օգտանունը պետք է լինի 3-16 սիմվոլ (a-z, 0-9, _) ձևաչափով։");
             return;
         }
-
         if (!isLogin && !emailRegex.test(formData.email)) {
             alert("Ներմուծեք վավեր էլ․ փոստ։");
             return;
         }
-
         if (!passwordRegex.test(formData.password)) {
-            alert(
-                "Գաղտնաբառը պետք է պարունակի առնվազն 8 նիշ, մեկ մեծատառ, թիվ և հատուկ նշան։"
-            );
+            alert("Գաղտնաբառը պետք է պարունակի առնվազն 8 նիշ, մեկ մեծատառ, թիվ և հատուկ նշան։");
             return;
         }
-
         if (!isLogin && formData.password !== formData.confirm) {
             alert("Գաղտնաբառերը չեն համընկնում։");
             return;
@@ -67,95 +73,139 @@ export default function Header() {
 
         alert(isLogin ? "Մուտքը հաջողվեց 🚀" : "Գրանցումը հաջողվեց ✅");
         setShowModal(false);
-        setFormData({
-            username: "",
-            email: "",
-            password: "",
-            confirm: "",
-            agree: false,
-        });
+        resetForm();
     };
 
-    const menuItems = [
-        { title: "Դասեր", path: "/courses" },
-        { title: "Մուտք", action: () => setShowModal(true) },
-    ];
+    const openAuthModal = () => {
+        setShowModal(true);
+        setMobileMenuOpen(false);
+    };
+
+    const goCourses = () => {
+        setMobileMenuOpen(false);
+    };
 
     return (
         <div className="relative min-h-screen bg-black/90 text-yellow-400 font-sans overflow-hidden">
-            <header className="flex justify-between items-center px-10 py-6 bg-gradient-to-r from-black via-zinc-900 to-black shadow-xl fixed top-0 left-0 w-full z-50">
-                <Link
-                    to="/"
-                    className="text-2xl font-bold text-yellow-400 tracking-widest hover:text-yellow-300 transition"
-                >
-                    ⚡ Outlaw Coding
-                </Link>
+            {/* HEADER */}
+            <header className="fixed top-0 left-0 w-full z-50 bg-gradient-to-r from-black via-zinc-900 to-black shadow-xl">
+                <div className="flex justify-between items-center px-4 sm:px-6 lg:px-10 py-4">
+                    <Link
+                        to="/"
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="text-lg sm:text-2xl font-bold text-yellow-400 tracking-widest hover:text-yellow-300 transition"
+                    >
+                        ⚡ Outlaw Coding
+                    </Link>
 
-                <nav className="flex gap-10 text-yellow-300 font-extrabold text-2xl ">
-                    {menuItems.map((item, i) => (
-                        <div key={i}>
-                            {item.path ? (
-                                <Link className=" border-yellow-400/40  shadow-lg hover:shadow-yellow-400/30   hover:scale-105" to={item.path}>{item.title}</Link>
-                            ) : (
+                    {/* Desktop nav */}
+                    <nav className="hidden md:flex items-center gap-6 lg:gap-10 text-yellow-300 font-extrabold text-lg lg:text-2xl">
+                        <Link
+                            to="/courses"
+                            className="hover:text-yellow-200 transition"
+                        >
+                            Դասեր
+                        </Link>
+
+                        <button
+                            onClick={openAuthModal}
+                            className="cursor-pointer text-lg lg:text-2xl rounded-2xl px-4 py-2 bg-zinc-900/60 border border-yellow-400/40 shadow-lg hover:shadow-yellow-400/30 transition-all duration-300 hover:scale-[1.03]"
+                        >
+                            Մուտք
+                        </button>
+                    </nav>
+
+                    {/* Mobile burger */}
+                    <button
+                        onClick={() => setMobileMenuOpen((v) => !v)}
+                        className="md:hidden inline-flex items-center justify-center w-10 h-10 rounded-xl bg-zinc-900/60 border border-yellow-400/30 hover:border-yellow-400/60 transition"
+                        aria-label="Open menu"
+                    >
+                        {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
+                    </button>
+                </div>
+
+                {/* Mobile dropdown */}
+                <AnimatePresence>
+                    {mobileMenuOpen && (
+                        <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: "auto", opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.25 }}
+                            className="md:hidden overflow-hidden border-t border-yellow-400/10"
+                        >
+                            <div className="px-4 pb-4 pt-3 flex flex-col gap-3">
+                                <Link
+                                    to="/courses"
+                                    onClick={goCourses}
+                                    className="w-full text-left rounded-xl px-4 py-3 bg-zinc-900/50 border border-yellow-400/20 hover:border-yellow-400/50 transition text-yellow-200 font-bold"
+                                >
+                                    Դասեր
+                                </Link>
+
                                 <button
-                                    onClick={item.action}
-                                    className="hover:text-yellow-400  cursor-pointer  text-2xl rounded-4xl w-[120px] h-[40px] 
-                                    bg-zinc-900/60 border border-yellow-400/40  shadow-lg hover:shadow-yellow-400/30 transition-all duration-500 hover:scale-105">
-                                    {item.title}
+                                    onClick={openAuthModal}
+                                    className="w-full text-left rounded-xl px-4 py-3 bg-yellow-500 hover:bg-yellow-600 transition text-black font-extrabold"
+                                >
+                                    Մուտք
                                 </button>
-                            )}
-                        </div>
-                    ))}
-                </nav>
+                            </div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
             </header>
 
-            <main className="pt-28 min-h-screen overflow-y-auto relative bg-transparent">
+            {/* MAIN */}
+            <main className="pt-20 sm:pt-24 min-h-screen overflow-y-auto relative bg-transparent">
                 <Outlet />
             </main>
 
+            {/* MODAL */}
             {showModal && (
-                <div className="fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center z-50">
+                <div className="fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center z-50 px-4">
                     <motion.div
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.4 }}
-                        className="relative bg-zinc-900/80 border border-yellow-400/30 rounded-2xl p-8 w-full max-w-md text-center shadow-2xl"
+                        initial={{ opacity: 0, scale: 0.92, y: 10 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        transition={{ duration: 0.25 }}
+                        className="relative bg-zinc-900/80 border border-yellow-400/30 rounded-2xl p-6 sm:p-8 w-full max-w-md text-center shadow-2xl overflow-hidden"
                     >
                         <button
-                            onClick={() => setShowModal(false)}
-                            className="absolute top-4 right-4 text-yellow-400 hover:text-yellow-200 transition"
+                            onClick={() => {
+                                setShowModal(false);
+                                resetForm();
+                            }}
+                            className="absolute top-3 right-3 text-yellow-400 hover:text-yellow-200 transition"
                         >
-                            <X size={26} />
+                            <X size={24} />
                         </button>
 
+                        {/* Եթե էս animation-ը ծանր ա մոբայլի վրա՝ hidden sm:block արա */}
                         <CodeAnimation />
-                        <h2 className=" text-3xl font-bold text-yellow-400 mb-6 z-10 relative">
+
+                        <h2 className="text-2xl sm:text-3xl font-bold text-yellow-400 mb-5 z-10 relative">
                             {isLogin ? "Մուտք" : "Գրանցվել"}
                         </h2>
 
-                        <form onSubmit={handleSubmit} className="space-y-4 text-left z-10 relative">
-                            <div>
+                        <form onSubmit={handleSubmit} className="space-y-3 text-left z-10 relative">
+                            <input
+                                type="text"
+                                name="username"
+                                placeholder="Օգտանուն"
+                                value={formData.username}
+                                onChange={handleChange}
+                                className="w-full px-4 py-2 rounded bg-zinc-800 text-green-400/80 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                            />
+
+                            {!isLogin && (
                                 <input
-                                    type="text"
-                                    name="username"
-                                    placeholder="Օգտանուն"
-                                    value={formData.username}
+                                    type="email"
+                                    name="email"
+                                    placeholder="Էլ․ փոստ"
+                                    value={formData.email}
                                     onChange={handleChange}
                                     className="w-full px-4 py-2 rounded bg-zinc-800 text-green-400/80 focus:outline-none focus:ring-2 focus:ring-yellow-400"
                                 />
-                            </div>
-
-                            {!isLogin && (
-                                <div>
-                                    <input
-                                        type="email"
-                                        name="email"
-                                        placeholder="Էլ․ փոստ"
-                                        value={formData.email}
-                                        onChange={handleChange}
-                                        className="w-full px-4 py-2 rounded bg-zinc-800 text-green-400/80 focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                                    />
-                                </div>
                             )}
 
                             <div className="relative">
@@ -165,30 +215,30 @@ export default function Header() {
                                     placeholder="Գաղտնաբառ"
                                     value={formData.password}
                                     onChange={handleChange}
-                                    className="w-full px-4 py-2 rounded bg-zinc-800 text-green-400/80 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                                    className="w-full px-4 py-2 rounded bg-zinc-800 text-green-400/80 focus:outline-none focus:ring-2 focus:ring-yellow-400 pr-11"
                                 />
-                                <span
+                                <button
+                                    type="button"
                                     onClick={() => setShowPassword(!showPassword)}
-                                    className="absolute right-3 top-2.5 text-yellow-400 cursor-pointer"
+                                    className="absolute right-3 top-2.5 text-yellow-400 hover:text-yellow-200"
+                                    aria-label="Toggle password visibility"
                                 >
                                     {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                                </span>
+                                </button>
                             </div>
 
                             {!isLogin && (
-                                <div>
-                                    <input
-                                        type="password"
-                                        name="confirm"
-                                        placeholder="Կրկնել գաղտնաբառը"
-                                        value={formData.confirm}
-                                        onChange={handleChange}
-                                        className="w-full px-4 py-2 rounded bg-zinc-800 text-green-400/80 focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                                    />
-                                </div>
+                                <input
+                                    type="password"
+                                    name="confirm"
+                                    placeholder="Կրկնել գաղտնաբառը"
+                                    value={formData.confirm}
+                                    onChange={handleChange}
+                                    className="w-full px-4 py-2 rounded bg-zinc-800 text-green-400/80 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                                />
                             )}
 
-                            <div className="flex items-center space-x-2 mt-2">
+                            <label className="flex items-center gap-2 mt-1 select-none">
                                 <input
                                     type="checkbox"
                                     name="agree"
@@ -196,14 +246,12 @@ export default function Header() {
                                     onChange={handleChange}
                                     className="accent-yellow-400 w-5 h-5"
                                 />
-                                <label className="text-sm text-zinc-300">
-                                    Համաձայն եմ պայմաններին
-                                </label>
-                            </div>
+                                <span className="text-sm text-zinc-300">Համաձայն եմ պայմաններին</span>
+                            </label>
 
                             <button
                                 type="submit"
-                                className="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-semibold py-2 rounded transition mt-3"
+                                className="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-semibold py-2 rounded transition mt-2"
                             >
                                 {isLogin ? "Մուտք գործել" : "Գրանցվել"}
                             </button>
@@ -211,12 +259,16 @@ export default function Header() {
 
                         <p className="mt-4 text-zinc-400 text-sm">
                             {isLogin ? "Դեռ հաշիվ չունե՞ս" : "Արդեն գրանցվա՞ծ ես"}{" "}
-                            <span
-                                onClick={() => setIsLogin(!isLogin)}
-                                className="text-yellow-400 hover:underline cursor-pointer"
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    setIsLogin(!isLogin);
+                                    resetForm();
+                                }}
+                                className="text-yellow-400 hover:underline"
                             >
                                 {isLogin ? "Գրանցվել" : "Մուտք գործել"}
-                            </span>
+                            </button>
                         </p>
                     </motion.div>
                 </div>
