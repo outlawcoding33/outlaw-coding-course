@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import CodeAnimation from "../Animation/CodeAnimation";
 
 const courses = [
@@ -13,6 +13,10 @@ const courses = [
 export default function Courses() {
   const navigate = useNavigate();
 
+  const openCourse = (path) => {
+    navigate(path);
+  };
+
   return (
     <section
       className="
@@ -25,33 +29,20 @@ export default function Courses() {
       <CodeAnimation />
 
       <div className="relative z-10 max-w-6xl mx-auto h-full flex flex-col">
-        {/* Back */}
-        <div className="w-full flex justify-start mb-3 sm:mb-4">
-          <button
-            type="button"
-            onClick={() => (window.history.length > 1 ? navigate(-1) : navigate("/"))}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-zinc-900/70 border border-yellow-400/40 text-yellow-300 hover:text-yellow-200 hover:shadow-yellow-400/20 shadow transition"
-          >
-            <span className="text-xl leading-none">←</span>
-            <span className="text-sm font-semibold">Հետ</span>
-          </button>
-        </div>
-
-        {/* Title center */}
         <h2 className="w-full text-center text-3xl sm:text-4xl md:text-5xl font-extrabold text-yellow-400 mb-4 sm:mb-5">
           Դարձիր Web Ծրագրավորող 💻
         </h2>
 
-        {/* Grid area */}
         <div className="flex-1 min-h-0">
-          {/* ✅ Mobile-ում scroll, Desktop-ում չէ */}
           <div className="h-full overflow-y-auto sm:overflow-hidden overflow-x-hidden pr-1">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
-              {courses.map((course, index) => (
-                <Link
-                  to={course.path}
-                  key={index}
+              {courses.map((course) => (
+                <button
+                  key={course.title}
+                  type="button"
+                  onClick={() => openCourse(course.path)}
                   className="
+                    text-left
                     bg-zinc-900/60 border border-yellow-400/40
                     p-5 lg:p-6
                     rounded-2xl shadow-lg
@@ -67,14 +58,13 @@ export default function Courses() {
                     {course.desc}
                   </p>
 
-                  <div className="bg-yellow-500 hover:bg-yellow-600 text-black font-semibold rounded-full px-4 py-2 inline-block transition text-sm">
+                  <span className="bg-yellow-500 hover:bg-yellow-600 text-black font-semibold rounded-full px-4 py-2 inline-block transition text-sm">
                     Սկսել
-                  </div>
-                </Link>
+                  </span>
+                </button>
               ))}
             </div>
           </div>
-          {/* ⬆️ էստեղ հանեցինք overflow-hidden-ը ու դրեցինք overflow-y-auto mobile-ի համար */}
         </div>
       </div>
     </section>

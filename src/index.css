@@ -37,3 +37,16 @@ html {
 .nice-scroll::-webkit-scrollbar-thumb:hover {
     background: rgba(250, 204, 21, .75);
 }
+
+/* hide scrollbar but keep scroll working */
+.hide-scrollbar {
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* IE/Edge old */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+    display: none;
+    /* Chrome/Safari */
+}

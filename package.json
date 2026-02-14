@@ -9,18 +9,21 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d dist",
+    "server": "json-server --watch db.json --port 5000",
+    "start": "concurrently \"npm run server\" \"npm run dev\""
   },
   "dependencies": {
     "@shadcn/ui": "^0.0.4",
     "@tailwindcss/vite": "^4.1.17",
+    "axios": "^1.13.5",
     "framer-motion": "^12.23.24",
     "ionicons": "^8.0.13",
     "lucide-react": "^0.553.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-router-dom": "^7.9.5",
-    "sweetalert2": "^11.26.3",
+    "sweetalert2": "^11.26.18",
     "tailwindcss": "^4.1.17"
   },
   "devDependencies": {
@@ -28,11 +31,13 @@
     "@types/react": "^19.1.16",
     "@types/react-dom": "^19.1.9",
     "@vitejs/plugin-react": "^5.0.4",
+    "concurrently": "^9.2.1",
     "eslint": "^9.36.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.22",
     "gh-pages": "^6.3.0",
     "globals": "^16.4.0",
+    "json-server": "^1.0.0-beta.5",
     "vite": "^7.1.7"
   }
 }

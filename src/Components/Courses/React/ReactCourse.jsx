@@ -4,28 +4,27 @@ import CodeAnimation from "../../Animation/CodeAnimation";
 
 export default function ReactCourse() {
     const lessons = [
-        "Սկիզբ React-ի հետ",
-        "Կոմպոնենտների ըմբռնում",
-        "Props-երի օգտագործում կոմպոնենտներում",
-        "Ձևավորում և մեդիա",
-        "Ներածություն Hooks-երին",
-        "Աշխատանք Effects-ի հետ",
-        "Դինամիկ արտապատկերում",
-        "Routing React-ում",
-        "Կլաս կոմպոնենտներ React-ում",
-        "Կյանքի ցիկլի մեթոդներ (Lifecycle Methods)",
-        "State-ի կառավարում React-ում",
-        "Բարձր մակարդակի կոմպոնենտներ (HOCs)",
-        "Սխալների կառավարում React-ում",
-        "Լրացուցիչ Hooks․ useState և useEffect-ից դուրս",
-        "Արտադրողականության օպտիմիզացում React-ում",
+        { title: "Սկիզբ React-ի հետ", desc: "Ինչ է React-ը և ինչպես է աշխատում։" },
+        { title: "Կոմպոնենտների ըմբռնում", desc: "Functional և reusable կոմպոնենտներ։" },
+        { title: "Props-երի օգտագործում կոմպոնենտներում", desc: "Տվյալների փոխանցում ծնողից երեխա։" },
+        { title: "Ձևավորում և մեդիա", desc: "CSS, Tailwind և մեդիա ինտեգրում։" },
+        { title: "Ներածություն Hooks-երին", desc: "useState, useEffect հիմունքներ։" },
+        { title: "Աշխատանք Effects-ի հետ", desc: "Lifecycle և side effect կառավարում։" },
+        { title: "Դինամիկ արտապատկերում", desc: "Conditional rendering և map մեթոդ։" },
+        { title: "Routing React-ում", desc: "React Router և էջերի անցում։" },
+        { title: "Կլաս կոմպոնենտներ React-ում", desc: "Class syntax և state կառավարում։" },
+        { title: "Կյանքի ցիկլի մեթոդներ", desc: "Mount, update և unmount փուլեր։" },
+        { title: "State-ի կառավարում React-ում", desc: "Local state և state flow։" },
+        { title: "Բարձր մակարդակի կոմպոնենտներ (HOCs)", desc: "Component wrapping և վերօգտագործում։" },
+        { title: "Սխալների կառավարում React-ում", desc: "Error boundary և try/catch մոտեցում։" },
+        { title: "Լրացուցիչ Hooks", desc: "useRef, useMemo, useCallback և այլ։" },
+        { title: "Արտադրողականության օպտիմիզացում", desc: "Re-render նվազեցում և memoization։" },
     ];
 
     const reduceMotion = useReducedMotion();
     const navigate = useNavigate();
 
-    // ✅ 16-րդը՝ քննություն
-    const items = [...lessons, "Քննություն ✅"];
+    const items = [...lessons, { title: "Քննություն ✅", desc: "Սկսել React քննությունը։", exam: true }];
 
     return (
         <section
@@ -43,7 +42,11 @@ export default function ReactCourse() {
                 <div className="w-full flex justify-start mb-3 sm:mb-4">
                     <button
                         type="button"
-                        onClick={() => (window.history.length > 1 ? navigate(-1) : navigate("/courses"))}
+                        onClick={() =>
+                            window.history.length > 1
+                                ? navigate(-1)
+                                : navigate("/courses")
+                        }
                         className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-zinc-900/70 border border-yellow-400/40 text-yellow-300 hover:text-yellow-200 hover:shadow-yellow-400/20 shadow transition"
                     >
                         <span className="text-xl leading-none">←</span>
@@ -51,35 +54,24 @@ export default function ReactCourse() {
                     </button>
                 </div>
 
-                {/* Title */}
                 <motion.h1
                     initial={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: -18 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6 }}
-                    className="text-center text-3xl sm:text-4xl md:text-5xl font-extrabold text-yellow-400 mb-3 sm:mb-4"
+                    className="text-center text-3xl sm:text-4xl md:text-5xl font-extrabold text-yellow-400 mb-4"
                 >
                     React Դասընթաց ⚛️
                 </motion.h1>
 
-                {/* Content */}
                 <div className="flex-1 min-h-0">
-                    {/* Mobile: scroll, Desktop: no scroll */}
-                    <div
-                        className="
-              nice-scroll h-full
-              overflow-y-auto sm:overflow-hidden
-              overflow-x-hidden pr-2
-            "
-                        style={{ WebkitOverflowScrolling: "touch" }}
-                    >
-                        {/* ✅ Desktop grid: միշտ 4x4 */}
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 pb-2">
+                    <div className="nice-scroll h-full overflow-y-auto sm:overflow-hidden overflow-x-hidden pr-2">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 pb-2">
                             {items.map((lesson, index) => {
-                                const isExam = lesson.includes("Քննություն");
+                                const isExam = lesson.exam;
 
                                 return (
                                     <motion.button
-                                        key={lesson + index}
+                                        key={lesson.title + index}
                                         type="button"
                                         initial={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
                                         animate={{ opacity: 1, y: 0 }}
@@ -98,36 +90,21 @@ export default function ReactCourse() {
                     `}
                                         onClick={() => {
                                             if (isExam) {
-                                                // եթե ուզում ես՝ այստեղ տանի /courses/react/exam կամ բացի modal
-                                                // navigate("/courses/react/exam");
                                                 alert("Քննությունը շուտով 🧠✅");
                                             }
                                         }}
                                     >
-                                        <h2 className={`text-xs sm:text-sm md:text-base font-bold leading-snug ${isExam ? "text-yellow-300" : "text-yellow-300"}`}>
-                                            {lesson}
+                                        <h2 className="text-sm sm:text-base font-bold text-yellow-300 mb-2 leading-snug">
+                                            {lesson.title}
                                         </h2>
-                                        {isExam && (
-                                            <p className="text-zinc-300 text-[11px] sm:text-xs mt-2">
-                                                Սկսել React քննությունը։
-                                            </p>
-                                        )}
+
+                                        <p className="text-zinc-300 text-xs sm:text-sm leading-snug">
+                                            {lesson.desc}
+                                        </p>
                                     </motion.button>
                                 );
                             })}
                         </div>
-
-                        {/* Եթե մի օր items-ը պակաս լինի 16-ից՝ այս placeholder-ները լրացնում են 4x4-ը */}
-                        {items.length < 16 && (
-                            <div className="hidden md:grid grid-cols-4 gap-3 sm:gap-4">
-                                {Array.from({ length: 16 - items.length }).map((_, i) => (
-                                    <div
-                                        key={i}
-                                        className="rounded-2xl border border-yellow-400/10 bg-zinc-900/20 p-4 opacity-40"
-                                    />
-                                ))}
-                            </div>
-                        )}
                     </div>
                 </div>
             </div>
