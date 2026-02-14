@@ -24,3 +24,4 @@ npm run deploy
 Write-Host "DONE ✅ Live should be updated." -ForegroundColor Green
 
 
+# .\deploy.ps1
