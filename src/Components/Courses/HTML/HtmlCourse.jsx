@@ -16,6 +16,8 @@ const htmlLessons = [
     {
         title: "HTML Մուլտիմեդիա",
         desc: "Նկարներ, վիդեո և աուդիո ավելացնել կայքում ճիշտ ձևով։",
+        link: "/src/Components/LastCourses/HTML/HtmlDay3.jsx",
+
     },
     {
         title: "Ցանկեր և Աղյուսակներ",

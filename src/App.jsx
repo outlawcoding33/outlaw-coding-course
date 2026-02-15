@@ -23,6 +23,11 @@ import Info2Html1 from "./Components/LastCourses/HTML/Day2/Info2Html1";
 import Info2Html2 from "./Components/LastCourses/HTML/Day2/Info2Html2";
 import Info2Html3 from "./Components/LastCourses/HTML/Day2/Info2Html3";
 import Info2Html4 from "./Components/LastCourses/HTML/Day2/Info2Html4";
+import HtmlDay3 from "./Components/LastCourses/HTML/HtmlDay3";
+import Info3Html1 from "./Components/LastCourses/HTML/Day3/Info3Html1";
+import Info3Html2 from "./Components/LastCourses/HTML/Day3/Info3Html2";
+import Info3Html3 from "./Components/LastCourses/HTML/Day3/Info3Html3";
+import Info3Html4 from "./Components/LastCourses/HTML/Day3/Info3Html4";
 
 function App() {
   return (
@@ -53,6 +58,15 @@ function App() {
           <Route path="/src/Components/LastCourses/HTML/Day2/Info2Html2.jsx" element={<Info2Html2 />} />
           <Route path="/src/Components/LastCourses/HTML/Day2/Info2Html3.jsx" element={<Info2Html3 />} />
           <Route path="/src/Components/LastCourses/HTML/Day2/Info2Html4.jsx" element={<Info2Html4 />} />
+
+          <Route path="/src/Components/LastCourses/HTML/HtmlDay3.jsx" element={<HtmlDay3 />} />
+          <Route path="/src/Components/LastCourses/HTML/Day3/Info3Html1.jsx" element={<Info3Html1 />} />
+          <Route path="/src/Components/LastCourses/HTML/Day3/Info3Html2.jsx" element={<Info3Html2 />} />
+          <Route path="/src/Components/LastCourses/HTML/Day3/Info3Html3.jsx" element={<Info3Html3 />} />
+          <Route path="/src/Components/LastCourses/HTML/Day3/Info3Html4.jsx" element={<Info3Html4 />} />
+
+
+
         </Route>
       </Routes>
     </Router>
